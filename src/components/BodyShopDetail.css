@@ -1,0 +1,7 @@
+.vesitable-item {
+  margin: 10px 0; /* Thêm khoảng cách giữa các item theo chiều dọc */
+}
+
+.slick-slide {
+  padding: 0 15px; /* Thêm khoảng cách giữa các slide (ngang) */
+}

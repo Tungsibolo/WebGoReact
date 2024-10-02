@@ -1,23 +1,40 @@
 import { useState } from "react";
-import OwlCarousel from "react-owl-carousel";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./BodyShopDetail.css";
 const BodyShopDetail = () => {
-  const options = {
-    items: 3,
-    margin: 10,
-    nav: true,
+  const settings = {
     dots: true,
-    loop: true,
-    responsive: {
-      0: {
-        items: 1,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
       },
-      600: {
-        items: 2,
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
       },
-      1000: {
-        items: 3,
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
       },
-    },
+    ],
   };
 
   const products = [
@@ -520,7 +537,7 @@ const BodyShopDetail = () => {
         </div>
         <h1 className="fw-bold mb-0">Related products</h1>
         <div className="vesitable">
-          <OwlCarousel className="owl-theme vegetable-carousel" {...options}>
+          <Slider {...settings}>
             {products.map((product, index) => (
               <div
                 className="border border-primary rounded position-relative vesitable-item"
@@ -555,7 +572,7 @@ const BodyShopDetail = () => {
                 </div>
               </div>
             ))}
-          </OwlCarousel>
+          </Slider>
         </div>
       </div>
     </div>

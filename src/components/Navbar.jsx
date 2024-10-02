@@ -1,7 +1,17 @@
 import { useEffect } from "react";
 import "../App";
 import { Link } from "react-router-dom";
-const Navbar = () => {
+import PropTypes from "prop-types";
+const Navbar = (props) => {
+  const logout = async () => {
+    await fetch("http://localhost:8000/api/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    props.setName("");
+  };
   useEffect(() => {
     const handleScroll = () => {
       const navbar = document.querySelector(".fixed-top");
@@ -31,6 +41,38 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []); // Mảng rỗng [] để đảm bảo sự kiện chỉ được gán một lần
+
+  let dropdown;
+  console.log("Navbar props.name: out ", props.name);
+
+  if (props.name === "") {
+    console.log("Current name in Navbar if:", props.name);
+    dropdown = (
+      <Link to="/login" className="my-auto">
+        <i className="fas fa-user fa-2x" style={{ color: "#81c408" }}></i>
+      </Link>
+    );
+  } else {
+    console.log("Current name in Navbar else :", props.name);
+    dropdown = (
+      <div className="nav-item dropdown">
+        <i
+          href="#"
+          className="nav-link dropdown-toggle fas fa-user fa-2x"
+          style={{ color: "#81c408" }}
+          data-bs-toggle="dropdown"
+        ></i>
+        <div className="dropdown-menu m-0 bg-secondary rounded-0">
+          <Link to="/" className="dropdown-item">
+            My profile
+          </Link>
+          <Link to="/login" className="dropdown-item" onClick={logout}>
+            Log out
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container-fluid fixed-top">
@@ -65,9 +107,9 @@ const Navbar = () => {
       </div>
       <div className="container px-0">
         <nav className="navbar navbar-light bg-white navbar-expand-xl">
-          <a href="index.html" className="navbar-brand">
+          <Link to="/" className="navbar-brand">
             <h1 className="text-primary display-6">Fruitables</h1>
-          </a>
+          </Link>
           <button
             className="navbar-toggler py-2 px-3"
             type="button"
@@ -102,20 +144,14 @@ const Navbar = () => {
                   <Link to="/cart" className="dropdown-item">
                     Cart
                   </Link>
-                  <a href="chackout.html" className="dropdown-item">
-                    Chackout
-                  </a>
-                  <a href="testimonial.html" className="dropdown-item">
-                    Testimonial
-                  </a>
-                  <a href="404.html" className="dropdown-item">
-                    404 Page
-                  </a>
+                  <Link to="/checkout" className="dropdown-item">
+                    Checkout
+                  </Link>
                 </div>
               </div>
-              <a href="contact.html" className="nav-item nav-link">
+              <Link to="/contact" className="nav-item nav-link">
                 Contact
-              </a>
+              </Link>
             </div>
             <div className="d-flex m-3 me-0">
               <button
@@ -125,7 +161,7 @@ const Navbar = () => {
               >
                 <i className="fas fa-search text-primary"></i>
               </button>
-              <a href="#" className="position-relative me-4 my-auto">
+              <Link to="/cart" className="position-relative me-4 my-auto">
                 <i
                   className="fa fa-shopping-bag fa-2x"
                   style={{ color: "#81c408" }}
@@ -141,19 +177,19 @@ const Navbar = () => {
                 >
                   0
                 </span>
-              </a>
-              <a href="#" className="my-auto">
-                <i
-                  className="fas fa-user fa-2x"
-                  style={{ color: "#81c408" }}
-                ></i>
-              </a>
+              </Link>
+              {dropdown}
             </div>
           </div>
         </nav>
       </div>
     </div>
   );
+};
+
+Navbar.propTypes = {
+  name: PropTypes.string, // Xác định kiểu string và bắt buộc
+  setName: PropTypes.func, // Xác định kiểu function và bắt buộc
 };
 
 export default Navbar;
